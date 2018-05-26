@@ -18,6 +18,10 @@
   "license": "CC0-1.0",
   "devDependencies": {},
   "dependencies": {
+    "bootstrap": "^4.1.1",
+    "ejs": "^2.6.1",
+    "electron-config": "^1.0.0",
+    "jquery": "^3.3.1",
     "mqtt": "^2.18.0"
   }
 }
