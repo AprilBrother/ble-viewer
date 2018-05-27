@@ -10,13 +10,12 @@
     <h1>Hello World!</h1>
 
     <form>
-        <input type="text" name="mqtt-host" placeholder="MQTT Host">
-        <input type="number" name="mqtt-port" placeholder="MQTT Port">
-        <input type="text" name="mqtt-topic" placeholder="Topic">
+        <input type="text" name="mqtt-host" placeholder="MQTT Host" value="mqtt.bconimg.com">
+        <input type="number" name="mqtt-port" placeholder="MQTT Port" value="1883">
+        <input type="text" name="mqtt-topic" placeholder="Topic" value="hello">
         <input type="text" name="mqtt-username" placeholder="MQTT Username">
         <input type="text" name="mqtt-password"  placeholder="MQTT Password">
-
-        <button>Test</button>
+        <button id="btn-test" type="button">Test</button>
     </form>
 
     <script>
@@ -25,5 +24,9 @@
     require('./renderer.js')
     </script>
     <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script>
+        $("#btn-test").click(function() {
+        });
+    </script>
   </body>
 </html>
