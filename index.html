@@ -4,11 +4,17 @@
     <meta charset="UTF-8">
     <title>Hello World!</title>
     <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+#container {
+    word-wrap: break-word;
+}
+</style>
 
   </head>
   <body>
-    <h1>Hello World!</h1>
+    <h1>BLE Viewer</h1>
 
+    <div id="container">
     <form>
         <input type="text" name="mqtt-host" placeholder="MQTT Host" value="mqtt.bconimg.com">
         <input type="number" name="mqtt-port" placeholder="MQTT Port" value="1883">
@@ -17,11 +23,12 @@
         <input type="text" name="mqtt-password"  placeholder="MQTT Password">
         <button id="btn-test" type="button">Test</button>
     </form>
+    </div>
 
     <script>
-    window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.min');
     // You can also require other files to run in this process
     require('./renderer.js')
+    window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.min');
     </script>
     <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script>
@@ -39,9 +46,14 @@
                 client.subscribe("/beacons")
             })
 
+
+            $('#container').html("");
             client.on('message', function (topic, message) {
+                $('#container').append(message.toString());
+                $("html, body").scrollTop($(document).height());
+
               // message is Buffer
-              console.log(message.toString())
+              //console.log(message.toString())
               //client.end()
             })
 
