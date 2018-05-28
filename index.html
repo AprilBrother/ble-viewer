@@ -18,19 +18,18 @@
     <form>
         <input type="text" name="mqtt-host" placeholder="MQTT Host" value="mqtt.bconimg.com">
         <input type="number" name="mqtt-port" placeholder="MQTT Port" value="1883">
-        <input type="text" name="mqtt-topic" placeholder="Topic" value="hello">
+        <input type="text" name="mqtt-topic" placeholder="Topic" value="beacon6c">
         <input type="text" name="mqtt-username" placeholder="MQTT Username">
         <input type="text" name="mqtt-password"  placeholder="MQTT Password">
         <button id="btn-test" type="button">Test</button>
     </form>
     </div>
 
+    <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script>
     // You can also require other files to run in this process
-    require('./renderer.js')
     window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.min');
+    require('./renderer.js')
     </script>
-    <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="main/index.js"></script>
   </body>
 </html>
