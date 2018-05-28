@@ -31,13 +31,22 @@ $(function () {
 
     $('#container').on('click', '#btn-test', function() {
         var mqtt = require('mqtt')
-            host = 'mqtt://' + $('input[name=mqtt-host]').val()
-            port = parseInt($('input[name=mqtt-port]').val())
-            topic = $('input[name=mqtt-topic]').val()
+            host = 'mqtt://' + $('input[name=mqtt-host]').val(),
+            port = parseInt($('input[name=mqtt-port]').val()),
+            user = parseInt($('#mqtt-username').val()),
+            pass = parseInt($('#mqtt-password').val()),
+            topic = $('input[name=mqtt-topic]').val(),
+            opt = {
+                port: port
+            }
 
-        var client  = mqtt.connect(host, {
-            port: port
-        })
+        if (user.length) {
+            opt.username = user;
+            if (pass.length) {
+                opt.password = pass;
+            }
+        }
+        var client  = mqtt.connect(host, opt);
 
         client.on('connect', function () {
             console.log("connected")
