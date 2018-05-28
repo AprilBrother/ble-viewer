@@ -7,6 +7,8 @@ $(function () {
         ejs = require('ejs'),
         fs = require('fs')
 
+    var is_fetch = 1;
+
     /**
      * Load a ejs template.
      *
@@ -40,11 +42,15 @@ $(function () {
             client.subscribe(topic)
         })
 
-        $('#container').html('<div class="list-group" id="cont-dev"></div>');
+        $('#container').html(loadTemplate("devices-cont", null));
         client.on('message', function (topic, message) {
+            if (!is_fetch) {
+                return;
+            }
+
             var data = msgpack.decode(message);
             data.cnt = data.devices.length;
-            data.devices.splice(5);
+            data.devices.splice(20);
             for(var i = 0; i < data.devices.length; i++) {
                 data.devices[i] = toFormatHex(data.devices[i]);
             }
@@ -52,6 +58,14 @@ $(function () {
             $('#cont-dev').prepend(loadTemplate('devices', data));
             $('#cont-dev a:gt(15)').remove();
         })
+
+        $('#opt-start').change(function() {
+            is_fetch = 1;
+        });
+
+        $('#opt-pause').change(function() {
+            is_fetch = 0;
+        });
 
         $('#cont-dev').on('click', 'a', function() {
             $('#cont-dev a').removeClass("active");
