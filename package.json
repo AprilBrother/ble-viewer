@@ -1,5 +1,5 @@
 {
-  "name": "ble viewer",
+  "name": "ble-viewer",
   "version": "1.0.0",
   "description": "BLE data viewer",
   "main": "main.js",
