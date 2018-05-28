@@ -2,34 +2,61 @@
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 
-const msgpack = require('msgpack5')();
+$(function () {
+    const msgpack = require('msgpack5')()
+        ejs = require('ejs'),
+        fs = require('fs')
 
-$("#btn-test").click(function() {
-    var mqtt = require('mqtt')
-        host = 'mqtt://' + $('input[name=mqtt-host]').val()
-        port = parseInt($('input[name=mqtt-port]').val())
-        topic = $('input[name=mqtt-topic]').val()
+    /**
+     * Load a ejs template.
+     *
+     * @param name
+     * @param object
+     *
+     * @returns {String}
+     */
+    function loadTemplate(name, object) {
+        var tpl = fs.readFileSync(__dirname + '/partials/' + name + '.ejs');
+        return ejs.render(tpl.toString(), object);
+    }
 
-    var client  = mqtt.connect(host, {
-        port: port
-    })
+    function toFormatHex(data) {
+        var newString  = data.toString('hex').toUpperCase().match(/.{2}/g).join(' ');
+        return newString;
+    }
 
-    client.on('connect', function () {
-        console.log("connected")
-        client.subscribe(topic)
-    })
+    $("#btn-test").click(function() {
+        var mqtt = require('mqtt')
+            host = 'mqtt://' + $('input[name=mqtt-host]').val()
+            port = parseInt($('input[name=mqtt-port]').val())
+            topic = $('input[name=mqtt-topic]').val()
 
-    $('#container').html("");
-    client.on('message', function (topic, message) {
-        var data = msgpack.decode(message)
-            devices = data.devices;
-        delete data.devices;
-        devices.splice(5);
-        console.log(JSON.stringify(data));
-        console.log(JSON.stringify(devices));
+        var client  = mqtt.connect(host, {
+            port: port
+        })
 
-        $('#container').append(JSON.stringify(data) + "<br>");
-        $("html, body").scrollTop($(document).height());
-    })
+        client.on('connect', function () {
+            console.log("connected")
+            client.subscribe(topic)
+        })
 
+        $('#container').html('<div class="list-group" id="cont-dev"></div>');
+        client.on('message', function (topic, message) {
+            var data = msgpack.decode(message);
+            data.cnt = data.devices.length;
+            data.devices.splice(5);
+            for(var i = 0; i < data.devices.length; i++) {
+                data.devices[i] = toFormatHex(data.devices[i]);
+            }
+
+            $('#cont-dev').prepend(loadTemplate('devices', data));
+            $('#cont-dev a:gt(15)').remove();
+        })
+
+        $('#cont-dev').on('click', 'a', function() {
+            $('#cont-dev a').removeClass("active");
+            $(this).addClass("active");
+        });
+
+    });
 });

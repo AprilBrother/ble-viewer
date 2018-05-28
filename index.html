@@ -25,10 +25,12 @@
     </form>
     </div>
 
+    <script>
+    window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.min');
+    </script>
     <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script>
     // You can also require other files to run in this process
-    window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.min');
     require('./renderer.js')
     </script>
   </body>
