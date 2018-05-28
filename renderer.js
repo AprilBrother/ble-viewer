@@ -27,7 +27,9 @@ $(function () {
         return newString;
     }
 
-    $("#btn-test").click(function() {
+    $('#container').html(loadTemplate("server-form", null));
+
+    $('#container').on('click', '#btn-test', function() {
         var mqtt = require('mqtt')
             host = 'mqtt://' + $('input[name=mqtt-host]').val()
             port = parseInt($('input[name=mqtt-port]').val())
@@ -65,6 +67,11 @@ $(function () {
 
         $('#opt-pause').change(function() {
             is_fetch = 0;
+        });
+
+        $('#opt-stop').change(function() {
+            client.end();
+            $('#container').html(loadTemplate("server-form", null));
         });
 
         $('#cont-dev').on('click', 'a', function() {
