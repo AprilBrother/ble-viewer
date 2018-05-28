@@ -1,8 +1,31 @@
-    <form>
-        <input type="text" name="mqtt-host" placeholder="MQTT Host" value="mqtt.bconimg.com">
-        <input type="number" name="mqtt-port" placeholder="MQTT Port" value="1883">
-        <input type="text" name="mqtt-topic" placeholder="Topic" value="beacon6c">
-        <input type="text" name="mqtt-username" placeholder="MQTT Username">
-        <input type="text" name="mqtt-password"  placeholder="MQTT Password">
-        <button id="btn-test" type="button">Test</button>
-    </form>
+<form>
+    <div class="form-row">
+        <div class="form-group col-md-7">
+          <label for="mqtt-host">MQTT Host</label>
+          <input type="text" id="mqtt-host" name="mqtt-host" placeholder="MQTT Host" value="mqtt.bconimg.com" class="form-control">
+        </div>
+
+        <div class="form-group col-md-5">
+            <label for="mqtt-port">MQTT Port</label>
+            <input type="number" id="mqtt-port" name="mqtt-port" placeholder="MQTT Port" value="1883" class="form-control">
+        </div>
+
+    </div>
+
+        <div class="form-group">
+            <label for="mqtt-topic">MQTT Topic</label>
+            <input type="text" class="form-control" id="mqtt-topic" name="mqtt-topic" placeholder="Topic" value="beacon6c">
+        </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="mqtt-username">MQTT Username</label>
+            <input type="text" name="mqtt-username" id="mqtt-username" placeholder="MQTT Username" class="form-control">
+        </div>
+        <div class="form-group col-md-6">
+            <label for="mqtt-password">MQTT Password</label>
+            <input type="text" name="mqtt-password" id="mqtt-password" placeholder="MQTT Password" class="form-control">
+        </div>
+        <button id="btn-test" type="button" class="btn btn-primary">Test</button>
+    </div>
+</form>
