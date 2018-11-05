@@ -1,25 +1,42 @@
 {
-  "name": "ble-viewer",
-  "version": "1.0.0",
-  "description": "BLE data viewer",
-  "main": "main.js",
-  "author": "yanc",
-  "scripts": {
-    "start": "electron .",
-    "dist": "electron-builder"
-  },
-  "repository": "https://github.com/electron/electron-quick-start",
-  "license": "CC0-1.0",
-  "devDependencies": {
-      "electron": "^2.0.2"
-  },
-  "dependencies": {
-    "bootstrap": "^4.1.1",
-    "ejs": "^2.6.1",
-    "electron-config": "^1.0.0",
-    "jquery": "^3.3.1",
-    "mqtt": "^2.18.0",
-    "msgpack5": "^4.2.0",
-    "popper.js": "^1.14.3"
-  }
+    "name": "ble-viewer",
+    "version": "1.0.1",
+    "description": "BLE Data Viewer",
+    "main": "main.js",
+    "homepage": "https://aprbrother.com",
+    "author": {
+        "name": "Yanc",
+        "email": "tech@aprbrother.com"
+    },
+    "license": "ISC",
+    "devDependencies": {
+        "electron-builder": "^20.15.1"
+    },
+    "dependencies": {
+        "bootstrap": "^4.1.1",
+        "ejs": "^2.6.1",
+        "electron-config": "^1.0.0",
+        "jquery": "^3.3.1",
+        "mqtt": "^2.18.0",
+        "msgpack5": "^4.2.0",
+        "popper.js": "^1.14.3"
+    },
+    "build": {
+        "appId": "v4.gateway.bleviewer",
+        "win": {
+            "target": ["nsis"],
+            "signingHashAlgorithms": ["sha1", "sha256"],
+            "publisherName": "Beijing April Brothers CO,.LTD"
+        },
+        "mac": {
+            "category": "public.app-category.developer-tools"
+        }
+    },
+    "scripts": {
+        "start": "electron .",
+        "dist:win": "electron-builder --win",
+        "dist:win32": "electron-builder --win --x64 --ia32",
+        "dist:osx": "electron-builder -mwl",
+        "dist:deb": "electron-builder --linux deb"
+    }
 }
