@@ -33,8 +33,8 @@ $(function () {
         var mqtt = require('mqtt')
             host = 'mqtt://' + $('input[name=mqtt-host]').val(),
             port = parseInt($('input[name=mqtt-port]').val()),
-            user = parseInt($('#mqtt-username').val()),
-            pass = parseInt($('#mqtt-password').val()),
+            user = $('#mqtt-username').val(),
+            pass = $('#mqtt-password').val(),
             topic = $('input[name=mqtt-topic]').val(),
             opt = {
                 port: port
