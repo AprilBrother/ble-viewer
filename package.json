@@ -40,7 +40,7 @@
     "scripts": {
         "start": "electron .",
         "dist:win": "electron-builder --win",
-        "dist:win32": "electron-builder --win --x64 --ia32",
+        "dist:win32": "electron-builder --win --ia32",
         "dist:osx": "electron-builder -mwl",
         "dist:deb": "electron-builder --linux deb"
     }
