@@ -1,6 +1,6 @@
 {
     "name": "ble-viewer",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "BLE Data Viewer",
     "main": "main.js",
     "homepage": "https://aprbrother.com",

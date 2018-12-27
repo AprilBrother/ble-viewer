@@ -60,6 +60,9 @@ $(function () {
             }
 
             var data = msgpack.decode(message);
+            if (typeof data.devices == "undefined") {
+                return;
+            }
             data.cnt = data.devices.length;
             data.devices.splice(20);
             for(var i = 0; i < data.devices.length; i++) {
