@@ -65,7 +65,7 @@ $(function () {
             data.cnt = data.devices.length;
 
             var t, filter = $('#mac-filter').val();
-            if (filter.length) {
+            if (filter.length && !(filter.length % 2)) {
                 filter = filter.toUpperCase().match(/.{2}/g).join(' ');
                 for(var i = 0; i < data.devices.length; i++) {
                     t = toFormatHex(data.devices[i]);
@@ -83,6 +83,9 @@ $(function () {
             }
 
             $('#cont-dev').prepend(loadTemplate('devices', data));
+            if (filter.length) {
+                $('#cont-dev a').trigger("click");
+            }
             $('#cont-dev a:gt(15)').remove();
         })
 
