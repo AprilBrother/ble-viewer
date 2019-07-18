@@ -28,7 +28,6 @@ $(function () {
     }
 
     $('#container').html(loadTemplate("server-form", null));
-
     $('#container').on('click', '#btn-test', function() {
         var mqtt = require('mqtt')
             host = 'mqtt://' + $('input[name=mqtt-host]').val(),
@@ -64,9 +63,23 @@ $(function () {
                 return;
             }
             data.cnt = data.devices.length;
-            data.devices.splice(20);
-            for(var i = 0; i < data.devices.length; i++) {
-                data.devices[i] = toFormatHex(data.devices[i]);
+
+            var t, filter = $('#mac-filter').val();
+            if (filter.length) {
+                filter = filter.toUpperCase().match(/.{2}/g).join(' ');
+                for(var i = 0; i < data.devices.length; i++) {
+                    t = toFormatHex(data.devices[i]);
+                    if (t.substr(3, filter.length) != filter) {
+                        delete data.devices[i];
+                        continue;
+                    }
+                    data.devices[i] = t;
+                }
+            } else {
+                data.devices.splice(20);
+                for(var i = 0; i < data.devices.length; i++) {
+                    data.devices[i] = toFormatHex(data.devices[i]);
+                }
             }
 
             $('#cont-dev').prepend(loadTemplate('devices', data));
