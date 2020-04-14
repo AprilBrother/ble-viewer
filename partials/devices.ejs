@@ -1,4 +1,4 @@
-    <a class="list-group-item list-group-item-action flex-column align-items-start" data-toggle="collapse" href="#collapse<%=mid%>" role="button" aria-expanded="false" aria-controls="collapse<%=mid%>">
+    <a class="list-group-item list-group-item-action flex-column align-items-start" data-toggle="collapse" href="#collapse<%=mid%>" role="button" aria-expanded="true" aria-controls="collapse<%=mid%>">
         <div class="d-flex w-100 justify-content-between">
           <h5 class="mb-1"> MAC: <%=mac%></h5>
           <small><%=cnt%> advertising datas</small>
@@ -7,8 +7,8 @@
 
         <div class="collapse" id="collapse<%=mid%>">
           <div class="card card-body text-dark">
-            <% devices.forEach(function(d){ %>
-                <p><%=d%></p>
+            <% matches.forEach(function(d){ %>
+                <p><%=d.mac%></p>
             <% }) %>
           </div>
         </div>

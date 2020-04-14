@@ -22,6 +22,56 @@ $(function () {
         return ejs.render(tpl.toString(), object);
     }
 
+    function parseDevice(data) {
+        // TODO
+        data = [
+            0xa, 0x9, 'T', 'e', 'm', 'p', 'T', 'r', 'a', 'c', 'k', 0x10, 0x18, 0x03, 0x18,
+            0x1a, 0x20,
+            0x64,
+            0x12, 0x34,
+            0x56, 0x78,
+            0x11, 0x22, 0x33, 0x44, 0x55, 0x66
+        ];
+        
+        /**
+         * device name = TempTrack
+         * length of device name = 9
+         * 0xa, 0x9, TempTrack, 0x10, 0x18, 0x0318, 0x1A20, 0x64, 0x1234, 0x5678, 0x112233445566
+         */
+        let dataLength      = 10, 
+            deviceOffset    = dataLength + 1,
+            tempOffset      = dataLength + 5,
+            batteryOffset   = dataLength + 7,
+            majorOffset     = dataLength + 8,
+            minorOffset     = dataLength + 10,
+            macOffset       = dataLength + 12,
+            keys = [0x10, 0x18, 0x03, 0x18];
+        
+        for (var i = deviceOffset, j = 0; j < keys.length; i++, j++) {
+            if (data[i] == keys[j]) {
+                continue;
+            } else {
+                return null;
+            }
+        }
+
+
+        var parsed = {
+            temperature: data[tempOffset] + data[tempOffset + 1] / 100,
+            battery: data[batteryOffset],
+            major: data[majorOffset] * 0x100 + data[majorOffset + 1],
+            minor: data[minorOffset] * 0x100 + data[minorOffset + 1],
+            mac: ""
+        };
+
+        console.log(data[majorOffset]);
+        data.slice(-6).forEach((d) => {
+            parsed.mac += d.toString(16);
+        });
+
+        return parsed;
+    }
+
     function toFormatHex(data) {
         var newString  = data.toString('hex').toUpperCase().match(/.{2}/g).join(' ');
         return newString;
@@ -76,10 +126,17 @@ $(function () {
                     data.devices[i] = t;
                 }
             } else {
-                data.devices.splice(20);
+                data.matches = [];
                 for(var i = 0; i < data.devices.length; i++) {
-                    data.devices[i] = toFormatHex(data.devices[i]);
+                    console.log(data.devices[i]);
+                    var adv = data.devices[i].slice(8);
+                    parsed = parseDevice(adv);
+                    if (parsed != null) {
+                        parsed.rssi = data.devices[i][7];
+                        data.matches.push(parsed);
+                    }
                 }
+                console.log(data.matches);
             }
 
             $('#cont-dev').prepend(loadTemplate('devices', data));
