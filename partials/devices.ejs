@@ -7,9 +7,11 @@
 
         <div class="collapse" id="collapse<%=mid%>">
           <div class="card card-body text-dark">
+            <ul>
             <% matches.forEach(function(d){ %>
-                <p><%=d.mac%></p>
+                <li>mac: <%=d.mac%> temp: <%=d.temperature%> batt: <%=d.battery%> major: <%=d.major%> minor: <%=d.minor%> RSSI: <%=d.rssi - 256%></li>
             <% }) %>
+            </ul>
           </div>
         </div>
     </a>

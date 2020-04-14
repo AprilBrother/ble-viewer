@@ -23,16 +23,6 @@ $(function () {
     }
 
     function parseDevice(data) {
-        // TODO
-        data = [
-            0xa, 0x9, 'T', 'e', 'm', 'p', 'T', 'r', 'a', 'c', 'k', 0x10, 0x18, 0x03, 0x18,
-            0x1a, 0x20,
-            0x64,
-            0x12, 0x34,
-            0x56, 0x78,
-            0x11, 0x22, 0x33, 0x44, 0x55, 0x66
-        ];
-        
         /**
          * device name = TempTrack
          * length of device name = 9
@@ -66,7 +56,7 @@ $(function () {
 
         console.log(data[majorOffset]);
         data.slice(-6).forEach((d) => {
-            parsed.mac += d.toString(16);
+            parsed.mac += d.toString(16).toUpperCase();
         });
 
         return parsed;
