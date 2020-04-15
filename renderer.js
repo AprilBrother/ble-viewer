@@ -26,7 +26,7 @@ $(function () {
         /**
          * device name = TempTrack
          * length of device name = 9
-         * 0xa, 0x9, TempTrack, 0x10, 0x18, 0x0318, 0x1A20, 0x64, 0x1234, 0x5678, 0x112233445566
+         * 0xa, 0x9, TempTrack, 0x10, 0x16, 0x0318, 0x1A20, 0x64, 0x1234, 0x5678, 0x112233445566
          */
         let dataLength      = 10, 
             deviceOffset    = dataLength + 1,
@@ -35,7 +35,7 @@ $(function () {
             majorOffset     = dataLength + 8,
             minorOffset     = dataLength + 10,
             macOffset       = dataLength + 12,
-            keys = [0x10, 0x18, 0x03, 0x18];
+            keys = [0x10, 0x16, 0x03, 0x18];
         
         for (var i = deviceOffset, j = 0; j < keys.length; i++, j++) {
             if (data[i] == keys[j]) {
