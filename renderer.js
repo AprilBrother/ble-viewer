@@ -132,7 +132,7 @@ $(function () {
 
             $('#cont-dev').prepend(loadTemplate('devices', data));
             //if (filter.length) {
-            $('#cont-dev a').trigger("click");
+            //$('#cont-dev a').trigger("click");
             //}
             $('#cont-dev a:gt(15)').remove();
         })
@@ -150,10 +150,12 @@ $(function () {
             $('#container').html(loadTemplate("server-form", null));
         });
 
+        /*
         $('#cont-dev').on('click', 'a', function() {
             $('#cont-dev a').removeClass("active");
             $(this).addClass("active");
         });
+        */
 
     });
 });
