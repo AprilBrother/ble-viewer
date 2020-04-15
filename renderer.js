@@ -131,9 +131,9 @@ $(function () {
             data.cnt = data.matches.length;
 
             $('#cont-dev').prepend(loadTemplate('devices', data));
-            if (filter.length) {
-                $('#cont-dev a').trigger("click");
-            }
+            //if (filter.length) {
+            $('#cont-dev a').trigger("click");
+            //}
             $('#cont-dev a:gt(15)').remove();
         })
 
