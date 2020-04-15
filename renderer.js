@@ -102,9 +102,9 @@ $(function () {
             if (typeof data.devices == "undefined") {
                 return;
             }
-            data.cnt = data.devices.length;
 
             var t, filter = $('#mac-filter').val();
+            data.matches = [];
             if (filter.length && !(filter.length % 2)) {
                 filter = filter.toUpperCase().match(/.{2}/g).join(' ');
                 for(var i = 0; i < data.devices.length; i++) {
@@ -115,19 +115,20 @@ $(function () {
                     }
                     data.devices[i] = t;
                 }
-            } else {
-                data.matches = [];
-                for(var i = 0; i < data.devices.length; i++) {
-                    console.log(data.devices[i]);
-                    var adv = data.devices[i].slice(8);
-                    parsed = parseDevice(adv);
-                    if (parsed != null) {
-                        parsed.rssi = data.devices[i][7];
-                        data.matches.push(parsed);
-                    }
+            } 
+
+            data.matches = [];
+            for(var i = 0; i < data.devices.length; i++) {
+                console.log(data.devices[i]);
+                var adv = data.devices[i].slice(8);
+                parsed = parseDevice(adv);
+                if (parsed != null) {
+                    parsed.rssi = data.devices[i][7];
+                    data.matches.push(parsed);
                 }
-                console.log(data.matches);
             }
+            console.log(data.matches);
+            data.cnt = data.matches.length;
 
             $('#cont-dev').prepend(loadTemplate('devices', data));
             if (filter.length) {
