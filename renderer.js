@@ -5,7 +5,10 @@
 $(function () {
     const msgpack = require('msgpack5')()
         ejs = require('ejs'),
-        fs = require('fs')
+        fs = require('fs'),
+        path = require('path'),
+        remote = require('electron').remote,
+        app = remote.app;
 
     var is_fetch = 1;
 
@@ -45,21 +48,16 @@ $(function () {
             }
         }
 
-
         var parsed = {
+            mac: "",
             temperature: data[tempOffset] + data[tempOffset + 1] / 100,
             battery: data[batteryOffset],
             major: data[majorOffset] * 0x100 + data[majorOffset + 1],
-            minor: data[minorOffset] * 0x100 + data[minorOffset + 1],
-            mac: ""
+            minor: data[minorOffset] * 0x100 + data[minorOffset + 1]
         };
 
         data.slice(-6).forEach((d) => {
-            var hex = d.toString(16).toUpperCase();
-            if (hex.length == 1) {
-                hex = '0' + hex;
-            }
-            parsed.mac += hex;
+            parsed.mac += d.toString(16).toUpperCase().padStart(2, "0");
         });
 
         return parsed;
@@ -68,6 +66,23 @@ $(function () {
     function toFormatHex(data) {
         var newString  = data.toString('hex').toUpperCase().match(/.{2}/g).join(' ');
         return newString;
+    }
+
+    function appendToLog(data) {
+        var dateStr = (new Date()).toISOString(),
+            today = dateStr.substring(0, 10),
+            logFile = path.join(app.getPath('logs'), today + ".csv");
+
+        var txt = val = "";
+        data.matches.forEach((d) => {
+            val = Object.values(d);
+            val.push(data.mac);
+            val.push(dateStr);
+            txt = val.join(",");
+            fs.appendFile(logFile, txt + "\r\n", (err) => {
+                console.log("saved:", txt);
+            });
+        });
     }
 
     $('#container').html(loadTemplate("server-form", null));
@@ -95,7 +110,10 @@ $(function () {
             client.subscribe(topic)
         })
 
-        $('#container').html(loadTemplate("devices-cont", null));
+        var mainData = {
+            logPath: app.getPath('logs')
+        };
+        $('#container').html(loadTemplate("devices-cont", mainData));
         client.on('message', function (topic, message) {
             if (!is_fetch) {
                 return;
@@ -129,14 +147,12 @@ $(function () {
                     data.matches.push(parsed);
                 }
             }
-            console.log(data.matches);
             data.cnt = data.matches.length;
 
             $('#cont-dev').prepend(loadTemplate('devices', data));
-            //if (filter.length) {
-            //$('#cont-dev a').trigger("click");
-            //}
             $('#cont-dev a:gt(15)').remove();
+
+            appendToLog(data);
         })
 
         $('#opt-start').change(function() {
@@ -160,4 +176,5 @@ $(function () {
         */
 
     });
+
 });
