@@ -69,8 +69,9 @@ $(function () {
     }
 
     function appendToLog(data) {
-        var dateStr = (new Date()).toISOString(),
-            today = dateStr.substring(0, 10),
+        var theDay  = new Date(),
+            dateStr = JSON.stringify(theDay.toLocaleString()),
+            today   = theDay.toISOString().substring(0, 10),
             logFile = path.join(app.getPath('logs'), today + ".csv");
 
         var txt = val = "";
