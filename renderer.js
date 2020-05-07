@@ -54,9 +54,12 @@ $(function () {
             mac: ""
         };
 
-        console.log(data[majorOffset]);
         data.slice(-6).forEach((d) => {
-            parsed.mac += d.toString(16).toUpperCase();
+            var hex = d.toString(16).toUpperCase();
+            if (hex.length == 1) {
+                hex = '0' + hex;
+            }
+            parsed.mac += hex;
         });
 
         return parsed;
@@ -119,7 +122,6 @@ $(function () {
 
             data.matches = [];
             for(var i = 0; i < data.devices.length; i++) {
-                console.log(data.devices[i]);
                 var adv = data.devices[i].slice(8);
                 parsed = parseDevice(adv);
                 if (parsed != null) {
