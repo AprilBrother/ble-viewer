@@ -9,6 +9,8 @@ $(function () {
         path = require('path'),
         remote = require('electron').remote,
         app = remote.app;
+        
+    var dateFormat = require('dateformat');
 
     var is_fetch = 1;
 
@@ -70,7 +72,7 @@ $(function () {
 
     function appendToLog(data) {
         var theDay  = new Date(),
-            dateStr = JSON.stringify(theDay.toLocaleString()),
+            dateStr = JSON.stringify(dateFormat(theDay, "yyyy-mm-dd h:MM:ss")),
             today   = theDay.toISOString().substring(0, 10),
             logFile = path.join(app.getPath('logs'), today + ".csv");
 
