@@ -76,10 +76,20 @@ $(function () {
             today   = theDay.toISOString().substring(0, 10),
             logFile = path.join(app.getPath('logs'), today + ".csv");
 
+        fs.open(logFile, 'r', (err, fd) => {
+            if (err) {
+                let title = "mac,temperature,battery,major,minor,rssi,gateway,time\r\n";
+                fs.appendFile(logFile, title, (err) => {});
+            } else {
+                console.log("log exists");
+            }
+        });
+
         var txt = val = "";
         data.matches.forEach((d) => {
+            d.mac = JSON.stringify(d.mac);
             val = Object.values(d);
-            val.push(data.mac);
+            val.push(JSON.stringify(data.mac));
             val.push(dateStr);
             txt = val.join(",");
             fs.appendFile(logFile, txt + "\r\n", (err) => {
@@ -146,7 +156,7 @@ $(function () {
                 var adv = data.devices[i].slice(8);
                 parsed = parseDevice(adv);
                 if (parsed != null) {
-                    parsed.rssi = data.devices[i][7];
+                    parsed.rssi = data.devices[i][7] - 256;
                     data.matches.push(parsed);
                 }
             }
