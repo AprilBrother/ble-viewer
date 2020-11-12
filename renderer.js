@@ -29,14 +29,16 @@ $(function () {
 
     $('#container').html(loadTemplate("server-form", null));
     $('#container').on('click', '#btn-test', function() {
-        var mqtt = require('mqtt')
-            host = 'mqtt://' + $('input[name=mqtt-host]').val(),
+        var mqtt = require('mqtt'),
+            host = $('input[name=mqtt-host]').val(),
             port = parseInt($('input[name=mqtt-port]').val()),
             user = $('#mqtt-username').val(),
             pass = $('#mqtt-password').val(),
             topic = $('input[name=mqtt-topic]').val(),
             opt = {
-                port: port
+                port: port,
+                host: host,
+                keepalive: 1000
             }
 
         if (user.length) {
@@ -45,12 +47,11 @@ $(function () {
                 opt.password = pass;
             }
         }
-        var client  = mqtt.connect(host, opt);
 
-        client.on('connect', function () {
-            console.log("connected")
-            client.subscribe(topic)
-        })
+        var client  = mqtt.connect(opt);
+        client.on('error', function (error) {
+            console.log('Conn failed:', error)
+        });
 
         $('#container').html(loadTemplate("devices-cont", null));
         client.on('message', function (topic, message) {
@@ -87,6 +88,11 @@ $(function () {
                 $('#cont-dev a').trigger("click");
             }
             $('#cont-dev a:gt(15)').remove();
+        })
+
+        client.on('connect', function () {
+            console.log("connected")
+            client.subscribe(topic);
         })
 
         $('#opt-start').change(function() {
