@@ -10,11 +10,10 @@
     },
     "license": "ISC",
     "devDependencies": {
-        "electron": "^10.1.5",
-        "electron-builder": "^22.9.1"
+        "electron": "^13.1.5"
     },
     "dependencies": {
-        "bootstrap": "^4.5.0",
+        "bootstrap": "^4.6",
         "ejs": "^2.6.1",
         "extend": "^3.0.2",
         "jquery": "^3.5.0",
