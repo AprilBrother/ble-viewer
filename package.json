@@ -10,7 +10,7 @@
     },
     "license": "ISC",
     "devDependencies": {
-        "electron": "^13.1.5"
+        "electron": "^13.1.7"
     },
     "dependencies": {
         "bootstrap": "^4.6",
@@ -18,9 +18,9 @@
         "extend": "^3.0.2",
         "jquery": "^3.5.0",
         "mqtt-packet": "^5.6.1",
-        "mqtt": "^4.2.4",
+        "mqtt": "^4.2.8",
         "msgpack5": "^4.5.1",
-        "js-yaml": "^3.13.1"
+        "js-yaml": "^4.1.0"
     },
     "build": {
         "appId": "v4.gateway.bleviewer",
