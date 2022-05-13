@@ -14,7 +14,7 @@
     },
     "dependencies": {
         "bootstrap": "^4.6",
-        "ejs": "^2.6.1",
+        "ejs": "^3.1.7",
         "extend": "^3.0.2",
         "jquery": "^3.5.0",
         "js-yaml": "^4.1.0",
