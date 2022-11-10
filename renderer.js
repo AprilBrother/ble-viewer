@@ -77,7 +77,7 @@ $(function () {
                     data.devices[i] = t;
                 }
             } else {
-                data.devices.splice(20);
+                //data.devices.splice(20);
                 for(var i = 0; i < data.devices.length; i++) {
                     data.devices[i] = toFormatHex(data.devices[i]);
                 }
