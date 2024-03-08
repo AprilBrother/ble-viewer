@@ -27,13 +27,16 @@ $(function () {
         return newString;
     }
 
-    $('#container').html(loadTemplate("server-form", null));
-    let serverData = localStorage.getItem('server-data') 
-    let params = new URLSearchParams(serverData)
-    for (const e of params.entries()) {
-        $(`#${e[0]}`).val(e[1])
+    function loadFormData() {
+        let serverData = localStorage.getItem('server-data') 
+        let params = new URLSearchParams(serverData)
+        for (const e of params.entries()) {
+            $(`#${e[0]}`).val(e[1])
+        }
     }
 
+    $('#container').html(loadTemplate("server-form", null));
+    loadFormData()
     $('#container').on('click', '#btn-test', function() {
         let formData = $('#f-server').serialize()
         localStorage.setItem('server-data', formData)
@@ -115,6 +118,7 @@ $(function () {
         $('#opt-stop').change(function() {
             client.end();
             $('#container').html(loadTemplate("server-form", null));
+            loadFormData()
         });
 
         $('#cont-dev').on('click', 'a', function() {
