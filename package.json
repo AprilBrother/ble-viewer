@@ -1,6 +1,6 @@
 {
     "name": "ble-viewer",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "BLE Data Viewer",
     "main": "main.js",
     "homepage": "https://aprbrother.com",
@@ -14,11 +14,11 @@
     },
     "dependencies": {
         "bootstrap": "^4.6",
-        "ejs": "^3.1.8",
+        "ejs": "^3.1.9",
         "extend": "^3.0.2",
         "jquery": "^3.5.0",
         "js-yaml": "^4.1.0",
-        "mqtt": "^4.3.7",
+        "mqtt": "^4.3.8",
         "mqtt-packet": "^5.6.1",
         "msgpack5": "^6.0.0"
     },

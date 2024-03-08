@@ -28,17 +28,26 @@ $(function () {
     }
 
     $('#container').html(loadTemplate("server-form", null));
+    let serverData = localStorage.getItem('server-data') 
+    let params = new URLSearchParams(serverData)
+    for (const e of params.entries()) {
+        $(`#${e[0]}`).val(e[1])
+    }
+
     $('#container').on('click', '#btn-test', function() {
+        let formData = $('#f-server').serialize()
+        localStorage.setItem('server-data', formData)
+
         var mqtt = require('mqtt'),
             host = $('input[name=mqtt-host]').val(),
             port = parseInt($('input[name=mqtt-port]').val()),
             user = $('#mqtt-username').val(),
             pass = $('#mqtt-password').val(),
             topic = $('input[name=mqtt-topic]').val(),
-            opt = {
-                port: port,
+            opt = { 
                 host: host,
-                keepalive: 1000
+                port: port,
+                keepalive: 1000 
             }
 
         if (user.length) {
@@ -48,7 +57,7 @@ $(function () {
             }
         }
 
-        var client  = mqtt.connect(opt);
+        var client  = mqtt.connect(opt)
         client.on('error', function (error) {
             console.log('Conn failed:', error)
         });
