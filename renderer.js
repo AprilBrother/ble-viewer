@@ -55,6 +55,39 @@ $(function () {
         return msgpack.decode(message);
     }
 
+    /**
+     * Normalise one device entry to { mac, text }.
+     *
+     * JSON packets use [type, mac, rssi, data]. msgpack packets carry the same
+     * fields packed in a Buffer: [type][mac x 6][rssi][data...].
+     *
+     * @param device
+     *
+     * @returns {Object}
+     */
+    function normalizeDevice(device) {
+        if (Array.isArray(device)) {
+            return {
+                type: device[0],
+                mac: toFormatHex(String(device[1])),
+                rssi: device[2],
+                text: toFormatHex(String(device[3]))
+            };
+        }
+
+        if (!Buffer.isBuffer(device) || device.length < 8) {
+            return { type: '', mac: '', rssi: '', text: toFormatHex(device) };
+        }
+
+        // msgpack: [type][mac x 6][rssi][data...]
+        return {
+            type: device.readUInt8(0),
+            mac: toFormatHex(device.slice(1, 7)),
+            rssi: device.readInt8(7),
+            text: toFormatHex(device.slice(8))
+        };
+    }
+
     function loadFormData() {
         let serverData = localStorage.getItem('server-data') 
         let params = new URLSearchParams(serverData)
@@ -103,25 +136,18 @@ $(function () {
             if (typeof data.devices == "undefined") {
                 return;
             }
-            data.cnt = data.devices.length;
+            var devices = data.devices.map(normalizeDevice),
+                filter = $('#mac-filter').val();
 
-            var t, filter = $('#mac-filter').val();
             if (filter.length && !(filter.length % 2)) {
                 filter = filter.toUpperCase().match(/.{2}/g).join(' ');
-                for(var i = 0; i < data.devices.length; i++) {
-                    t = toFormatHex(data.devices[i]);
-                    if (t.substr(3, filter.length) != filter) {
-                        delete data.devices[i];
-                        continue;
-                    }
-                    data.devices[i] = t;
-                }
-            } else {
-                //data.devices.splice(20);
-                for(var i = 0; i < data.devices.length; i++) {
-                    data.devices[i] = toFormatHex(data.devices[i]);
-                }
+                devices = devices.filter(function (d) {
+                    return d.mac.indexOf(filter) === 0;
+                });
             }
+
+            data.cnt = devices.length;
+            data.devices = devices;
 
             $('#cont-dev').prepend(loadTemplate('devices', data));
             if (filter.length) {
