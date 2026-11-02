@@ -32,6 +32,9 @@ $(function () {
             var pairs = hex.match(/.{2}/g);
             return pairs ? pairs.join(' ').toUpperCase() : hex.toUpperCase();
         }
+        if (!Buffer.isBuffer(data)) {
+            data = Buffer.from(data);
+        }
         return data.toString('hex').toUpperCase().match(/.{2}/g).join(' ');
     }
 
@@ -67,11 +70,23 @@ $(function () {
      */
     function normalizeDevice(device) {
         if (Array.isArray(device)) {
+            // mode 1 (NOTIFY): [type, mac, service UUID, char UUID, data, rssi]
+            if (device.length >= 6) {
+                return {
+                    type: device[0],
+                    mac: toFormatHex(device[1]),
+                    uuid: toFormatHex(device[2]).replace(/ /g, '') + '/' +
+                        toFormatHex(device[3]).replace(/ /g, ''),
+                    rssi: device[5],
+                    text: toFormatHex(device[4])
+                };
+            }
+
             return {
                 type: device[0],
-                mac: toFormatHex(String(device[1])),
+                mac: toFormatHex(device[1]),
                 rssi: device[2],
-                text: toFormatHex(String(device[3]))
+                text: toFormatHex(device[3])
             };
         }
 

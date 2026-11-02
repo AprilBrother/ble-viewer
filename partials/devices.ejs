@@ -13,6 +13,9 @@
                   <span class="badge badge-info flex-shrink-0 mr-2" style="width: 2rem;"><%= d.type %></span>
                   <% } %>
                   <span class="text-monospace font-weight-bold text-primary bg-light border rounded px-2 flex-shrink-0 mr-2" style="width: 12rem;"><%= d.mac %></span>
+                  <% if (d.uuid) { %>
+                  <span class="badge badge-light border text-monospace flex-shrink-0 mr-2"><%= d.uuid %></span>
+                  <% } %>
                   <% if (d.rssi !== '') { %>
                   <span class="badge badge-secondary flex-shrink-0 mr-2" style="width: 3.5rem;"><%= d.rssi %></span>
                   <% } %>
