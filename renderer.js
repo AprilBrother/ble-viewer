@@ -22,9 +22,37 @@ $(function () {
         return ejs.render(tpl.toString(), object);
     }
 
+    /**
+     * Convert a device payload to a spaced, upper-case hex string.
+     * Accepts a Buffer (msgpack) or a hex string (JSON).
+     */
     function toFormatHex(data) {
-        var newString  = data.toString('hex').toUpperCase().match(/.{2}/g).join(' ');
-        return newString;
+        if (typeof data === 'string') {
+            var hex = data.replace(/[\s:-]/g, '');
+            var pairs = hex.match(/.{2}/g);
+            return pairs ? pairs.join(' ').toUpperCase() : hex.toUpperCase();
+        }
+        return data.toString('hex').toUpperCase().match(/.{2}/g).join(' ');
+    }
+
+    /**
+     * Decode an MQTT payload. JSON packets are decoded as text, everything
+     * else is treated as msgpack.
+     *
+     * @param message Buffer
+     *
+     * @returns {Object}
+     */
+    function decodePayload(message) {
+        var text = message.toString('utf8').trim();
+        if (text.charAt(0) === '{' || text.charAt(0) === '[') {
+            try {
+                return JSON.parse(text);
+            } catch (e) {
+                console.log('Invalid JSON payload, fallback to msgpack:', e.message);
+            }
+        }
+        return msgpack.decode(message);
     }
 
     function loadFormData() {
@@ -71,7 +99,7 @@ $(function () {
                 return;
             }
 
-            var data = msgpack.decode(message);
+            var data = decodePayload(message);
             if (typeof data.devices == "undefined") {
                 return;
             }
